@@ -1,5 +1,111 @@
-body{
-  background: red;
-  width: 100px;
-  height: 100px;
+body {
+  width: 200px;
+  height: 160px;
+  margin: 0px;
+  padding: 0px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 45px;
+  background: rgb(41, 42, 45);
+}
+.off {
+  opacity: 0.4;
+}
+
+#select {
+  width: 180px;
+  height: 35px;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  color: #fff;
+  background: #45474c;
+  padding: 0px 15px;
+  font-size: 15px;
+  letter-spacing: 0.7px;
+  position: relative;
+  margin-top: 10px;
+  margin-left: -10px;
+  background-image: url("../assets/icons/arrow-up.png");
+  background-repeat: no-repeat;
+  background-position-x: 150px;
+  background-position-y: 7px;
+  cursor: pointer;
+}
+#select::-ms-expand {
+  display: none;
+}
+#select:focus {
+  outline: 2px solid #2196f3;
+}
+
+p {
+  color: #fff;
+  font-size: 15px;
+}
+span {
+  position: absolute;
+  top: 22px;
+  right: 80px;
+  color: #fff;
+}
+
+.switch {
+  position: absolute;
+  display: inline-block;
+  width: 35px;
+  height: 17px;
+  top: 20px;
+  right: 30px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 17px;
+  width: 17px;
+  left: -1px;
+  bottom: 0px;
+  background-color: #fff;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+input:checked + .slider:before {
+  -webkit-transform: translateX(20px);
+  -ms-transform: translateX(20px);
+  transform: translateX(20px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+.slider.round:before {
+  border-radius: 50%;
 }
