@@ -1,7 +1,13 @@
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  localStorage.setItem("isAppOn", request);
+  return true;
+});
+
 window.addEventListener("mouseup", starter);
 function starter() {
+  const isAppOn = localStorage.getItem("isAppOn");
   const selectedText = window.getSelection().toString();
-  if (isQueryTranslatable(selectedText)) {
+  if (isAppOn != "false" && isQueryTranslatable(selectedText)) {
     messageController(selectedText, data());
   } else {
     deletePopup(data());
