@@ -30,7 +30,7 @@ function starter(data) {
 }
 
 function sendLanguage() {
-  const query = { language: "tr", for: "setLanguage" };
+  const query = { language: "tr", type: "setLang" };
   const select = document.getElementById("select").options;
   const selectIndex = select.selectedIndex;
   const selectValue = select[selectIndex].value;
@@ -53,11 +53,6 @@ function handleOnOff() {
     select.disabled = true;
     localStorage.setItem("isAppOn", false);
   }
-
-  // const query = {
-  //   for: "SetOnOff",
-  //   is: check.checked
-  // };
   chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, check.checked);
   });
@@ -98,5 +93,3 @@ function setViewToOnOff(data) {
     data.check.checked = true;
   }
 }
-
-
