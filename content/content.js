@@ -48,7 +48,11 @@ function data() {
   };
 }
 function messageController(selectedText, data) {
-  chrome.runtime.sendMessage(selectedText, text => {
+  const query = {
+    text: selectedText,
+    type: "translate"
+  };
+  chrome.runtime.sendMessage(query, text => {
     createPopup(text, data);
   });
 }
