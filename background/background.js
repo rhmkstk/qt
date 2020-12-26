@@ -7,12 +7,15 @@ let data = {
 chrome.runtime.onMessage.addListener(receiver);
 
 function receiver(request, sender, sendResponse) {
-  translate(request,sendResponse)
-  return true // get error if we do not say chrome api where to close receiver function.
+  if (request.type == "setLang") {
+    data.targetLang = request.language;
+  }
+  translate(request, sendResponse);
+  return true; // get error if we do not say chrome api where to close receiver function.
 }
 
-function translate(request,sendResponse){
-  const sourceText = request;
+function translate(request, sendResponse) {
+  const sourceText = request.text;
   const URL = `${data.baseURL}${data.sourceLang}&tl=${
     data.targetLang
   }&dt=t&q=${encodeURI(sourceText)}`;
