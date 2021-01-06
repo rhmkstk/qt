@@ -4,9 +4,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 window.addEventListener("mouseup", starter);
+
 function starter() {
   const isAppOn = localStorage.getItem("isAppOn");
   const selectedText = window.getSelection().toString();
+  if (isSelectionPopup()) return;
   if (isAppOn != "false" && isQueryTranslatable(selectedText)) {
     messageController(selectedText, data());
   } else {
@@ -20,6 +22,7 @@ function data() {
     relative: document.body.parentNode.getBoundingClientRect(),
     bottomPopup: document.getElementById("bottomPopup"),
     topPopup: document.getElementById("topPopup"),
+    popup: document.getElementById("popup"),
     r() {
       if (this.selection.rangeCount > 0)
         return this.selection.getRangeAt(0).getBoundingClientRect();
@@ -47,13 +50,23 @@ function data() {
     }
   };
 }
+function isSelectionPopup() {
+  const popup = document.getElementById("popup");
+  if (popup != null) {
+    return window.getSelection().containsNode(popup, true);
+  }
+  return false;
+}
 function messageController(selectedText, data) {
   const query = {
     text: selectedText,
     type: "translate"
   };
   chrome.runtime.sendMessage(query, text => {
-    createPopup(text, data);
+    if (/[a-zA-Z]/g.test(text)) {
+      deletePopup(data);
+      createPopup(text, data);
+    }
   });
 }
 
@@ -66,17 +79,18 @@ function createPopup(text, data) {
     .getPropertyValue("font-size");
   data.newElement.innerText = text;
   data.newElement.style.fontSize = parseInt(size) + "px";
+  data.newElement.setAttribute("id", "popup");
   document.body.appendChild(data.newElement);
   setPopupPositionY(data);
   setPopupPositionX(data);
 }
 function setPopupPositionY(data) {
-  // reaches the coordinates of selected element and gives it to popup(as css top prop.) which we create, before do that checks the choosen elements position according to page, if the position closer top corner then bottom corner; puts popup to top of choosen word/words else puts under the choosen word/words.
+  // we set the popup below or above the selected element according to the position of the selected element on the y axis
   if (data.popupPosition() > 0) {
-    data.newElement.setAttribute("id", "bottomPopup");
+    data.newElement.classList.add("bottomPopup");
     data.newElement.style.top = data.r().bottom - data.relative.top + 8 + "px";
   } else {
-    data.newElement.setAttribute("id", "topPopup");
+    data.newElement.classList.add("topPopup");
     data.newElement.style.top =
       data.r().bottom -
       data.relative.top +
@@ -86,7 +100,7 @@ function setPopupPositionY(data) {
 }
 
 function setPopupPositionX(data) {
-  // (r.right - relative.right) gives right corner of selected element as pixel. If we give that value as css right property to element that we create; right corner of element align to right corner of selected element, in this case if the width prop. of element we create is bigger than element choosen on the page the arrow of popup might show the word which the user did not select, to prevent this we align two elements from middle.
+  // (r.right - relative.right) gives the coordinates of the right corner of the selected element, requireSpaceForOneSide gives needed value to align popup at middle of selected element
   data.newElement.style.right =
     -(data.r().right - data.relative.right) +
     data.requireSpaceForOneSide() +
@@ -94,8 +108,5 @@ function setPopupPositionX(data) {
 }
 
 function deletePopup(data) {
-  if (data.bottomPopup != null)
-    data.bottomPopup.parentNode.removeChild(data.bottomPopup);
-  if (data.topPopup != null)
-    data.topPopup.parentNode.removeChild(data.topPopup);
+  if (data.popup != null) data.popup.parentNode.removeChild(data.popup);
 }
