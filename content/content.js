@@ -63,7 +63,7 @@ function messageController(selectedText, data) {
     type: "translate"
   };
   chrome.runtime.sendMessage(query, text => {
-    if (/[a-zA-Z]/g.test(text)) {
+    if (text) {
       deletePopup(data);
       createPopup(text, data);
     }
