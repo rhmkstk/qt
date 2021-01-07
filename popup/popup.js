@@ -19,7 +19,8 @@ function data() {
       { lang: "Italian", short: "it" },
       { lang: "Japanese", short: "ja" },
       { lang: "Chinese", short: "zh" },
-      { lang: "Russian", short: "ru" }
+      { lang: "Russian", short: "ru" },
+      { lang: "Arabic", short: "ar" }
     ]
   };
 }
@@ -61,8 +62,10 @@ function handleOnOff() {
 function createLanguageList(data) {
   const select = document.createElement("select");
   select.setAttribute("id", "select");
-
-  data.languages.map(lng => {
+  const sortedLang = data.languages.sort((a, b) =>
+    a.lang > b.lang ? 1 : b.lang > a.lang ? -1 : 0
+  );
+  sortedLang.map(lng => {
     const option = document.createElement("option");
     option.setAttribute("id", "option");
     option.value = lng.short;
