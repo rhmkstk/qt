@@ -3,6 +3,11 @@
   "description" : "Translator extension",
   "version" : "1.0",
   "manifest_version" : 2,
+  "icons" : {
+    "16": "./assets/logos/qtlogo.png",
+    "48": "./assets/logos/qtlogo.png"
+
+  },
   "browser_action" : {
     "default_popup" : "./popup/popup.html",
     "default_title" : "translation extension"
